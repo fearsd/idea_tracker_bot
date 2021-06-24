@@ -1,9 +1,13 @@
 import config
 import logging
+import os
 
 from aiogram import Bot, Dispatcher, executor, types
 
-BOT_TOKEN = config.config['BOT_TOKEN']
+try:
+    BOT_TOKEN = config.config['BOT_TOKEN']
+except:
+    BOT_TOKEN = os.environ['BOT_TOKEN']
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
