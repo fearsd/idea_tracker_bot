@@ -2,6 +2,7 @@ pytest
 pytest-cov
 pytest-dotenv
 flake8
+wemake-python-styleguide
 aiogram
 sqlalchemy
 psycopg2
