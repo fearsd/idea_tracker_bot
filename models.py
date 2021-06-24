@@ -7,16 +7,21 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql.schema import ForeignKey
 from config import config
 
-try:    
-    SQLALCHEMY_DATABASE_URL = f'postgresql+psycopg2://{config["DB_USER"]}:{config["DB_PASSWORD"]}@127.0.0.1:5432/{config["DB_NAME"]}'
-except:
-    SQLALCHEMY_DATABASE_URL = os.environ['DATABASE_URL']
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+def get_engine():
+    try:    
+        SQLALCHEMY_DATABASE_URL = f'postgresql+psycopg2://{config["DB_USER"]}:{config["DB_PASSWORD"]}@127.0.0.1:5432/{config["DB_NAME"]}'
+    except:
+        SQLALCHEMY_DATABASE_URL = os.environ['DATABASE_URL']
+
+    engine = create_engine(SQLALCHEMY_DATABASE_URL)
+    return engine
+
 Base = declarative_base()
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 def get_db():
+    engine = get_engine()
+    SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
     db = SessionLocal()
     try:
         yield db
