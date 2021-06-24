@@ -1,3 +1,7 @@
 from dotenv import dotenv_values
+import os
 
-config = dotenv_values(".env")
+try:
+    config = dotenv_values(".env")
+except:
+    config = os.environ
