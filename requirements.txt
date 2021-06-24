@@ -1,0 +1,7 @@
+pytest
+pytest-cov
+pytest-dotenv
+aiogram
+sqlalchemy
+psycopg2
+python-dotenv
