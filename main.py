@@ -1,6 +1,9 @@
 import config
 import logging
 import os
+import models
+from models import engine, get_db
+from handlers import register_user
 
 from aiogram import Bot, Dispatcher, executor, types
 
@@ -8,6 +11,8 @@ try:
     BOT_TOKEN = config.config['BOT_TOKEN']
 except:
     BOT_TOKEN = os.environ['BOT_TOKEN']
+
+models.Base.metadata.create_all(engine)
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
@@ -17,6 +22,11 @@ dp = Dispatcher(bot)
 @dp.message_handler(commands=['start'])
 async def welcome(message: types.Message):
     print(message)
+    db = get_db()
+    user = register_user(data={
+        'telegram_id': message['from']['id']
+    }, db=db)
+    print(user)
     await message.reply('Hi!')
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
