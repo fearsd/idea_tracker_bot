@@ -2,9 +2,9 @@
 from models import User
 
 
-def register_user(*, data, db):
-    # db = get_db()
-    new_user = User(**data)
+def register_user(*, user_data, db):
+    """Register new user."""
+    new_user = User(**user_data)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
