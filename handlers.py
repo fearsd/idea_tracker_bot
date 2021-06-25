@@ -1,4 +1,4 @@
-from models import User, get_db
+from models import User
 
 
 def register_user(*, data, db):

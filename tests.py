@@ -1,5 +1,7 @@
 import pytest
+
 from handlers import register_user
+
 
 def test_sum():
     assert 2 + 2 == 4

@@ -1,15 +1,16 @@
-import config
 import logging
 import os
-import models
-from models import get_engine, get_db
-from handlers import register_user
 
 from aiogram import Bot, Dispatcher, executor, types
 
+import config
+import models
+from handlers import register_user
+from models import get_db, get_engine
+
 try:
     BOT_TOKEN = config.config['BOT_TOKEN']
-except:
+except BaseException:
     BOT_TOKEN = os.environ['BOT_TOKEN']
 
 models.Base.metadata.create_all(get_engine())
@@ -27,6 +28,7 @@ async def welcome(message: types.Message):
     }, db=next(get_db()))
     print(user)
     await message.reply('Hi!')
+
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def add_idea(message: types.Message):

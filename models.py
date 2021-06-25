@@ -1,25 +1,28 @@
 import os
-from sqlalchemy import create_engine
+
+from sqlalchemy import Column, DateTime, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-
-from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql.schema import ForeignKey
+
 from config import config
 
 
 def get_engine():
-    try:    
+    try:
         SQLALCHEMY_DATABASE_URL = f'postgresql+psycopg2://{config["DB_USER"]}:{config["DB_PASSWORD"]}@127.0.0.1:5432/{config["DB_NAME"]}'
-    except:
+    except BaseException:
         SQLALCHEMY_DATABASE_URL = os.environ['DATABASE_URL']
 
     if SQLALCHEMY_DATABASE_URL.startswith('postgres://'):
-        SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace('postgres://', "postgresql://", 1)
+        SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace(
+            'postgres://', "postgresql://", 1)
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
     return engine
 
+
 Base = declarative_base()
+
 
 def get_db():
     engine = get_engine()
@@ -29,6 +32,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 class User(Base):
     __tablename__ = 'users'
