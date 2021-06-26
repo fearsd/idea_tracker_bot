@@ -6,7 +6,7 @@ from aiogram import Bot, Dispatcher, executor, types
 
 import config
 from handlers import register_user
-from models import get_db, get_engine, Base
+from models import Base, get_db, get_engine
 
 try:
     BOT_TOKEN = config.config['BOT_TOKEN']
@@ -24,7 +24,7 @@ dp = Dispatcher(bot)
 async def welcome(message: types.Message):
     """Message handler on start command."""
     user_data = {
-        'telegram_id': message['from']['id']
+        'telegram_id': message['from']['id'],
     }
     register_user(user_data=user_data, db=next(get_db()))
     await message.reply('Hi!')

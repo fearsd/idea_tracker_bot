@@ -1,5 +1,4 @@
 """Tests."""
-import pytest # noqa: F401
 
 from handlers import register_user
 
@@ -15,6 +14,6 @@ def test_dividing():
 
 
 def test_register_user(test_db):
-    data = {'telegram_id': 1232313}
-    user = register_user(data=data, db=test_db)
-    assert user.telegram_id == data['telegram_id'] # noqa: S101
+    user_data = {'telegram_id': 1232313}
+    user = register_user(user_data=user_data, db=test_db)
+    assert user.telegram_id == user_data['telegram_id'] # noqa: S101
