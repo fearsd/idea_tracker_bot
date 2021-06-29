@@ -1,46 +1,73 @@
+"""Module has classes and methods to operate with db."""
 import os
-from sqlalchemy import create_engine
+
+from sqlalchemy import Column, DateTime, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-
-from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql.schema import ForeignKey
+
 from config import config
 
 
 def get_engine():
-    try:    
-        SQLALCHEMY_DATABASE_URL = f'postgresql+psycopg2://{config["DB_USER"]}:{config["DB_PASSWORD"]}@127.0.0.1:5432/{config["DB_NAME"]}'
-    except:
-        SQLALCHEMY_DATABASE_URL = os.environ['DATABASE_URL']
+    """
+    Db engine.
 
-    if SQLALCHEMY_DATABASE_URL.startswith('postgres://'):
-        SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace('postgres://', "postgresql://", 1)
-    engine = create_engine(SQLALCHEMY_DATABASE_URL)
-    return engine
+    Returns:
+        engine: Engine of db.
+    """
+    dialect = 'postgresql+psycopg2'
+    try:
+        database_uri = '{0}://{1}:{2}@127.0.0.1:5432/{3}'.format(
+            dialect,
+            config['DB_USER'],
+            config['DB_PASSWORD'],
+            config['DB_NAME'],
+        )
+    except KeyError:
+        database_uri = os.environ['DATABASE_URL']
+
+    if database_uri.startswith('postgres://'):
+        database_uri = database_uri.replace('postgres://', 'postgresql://', 1)
+    return create_engine(database_uri)
+
 
 Base = declarative_base()
 
+
 def get_db():
+    """
+    Db session.
+
+    Yields:
+        db: Db session
+    """
     engine = get_engine()
-    SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
-    db = SessionLocal()
-    try:
+    session_local = sessionmaker(
+        bind=engine, autocommit=False, autoflush=False,
+    )
+    db = session_local()
+    try:  # noqa: WPS501
         yield db
     finally:
         db.close()
 
+
 class User(Base):
+    """User model."""
+
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)
     telegram_id = Column(Integer, unique=True)
 
 
-class Item(Base):
+class Item(Base):  # noqa: WPS110
+    """Item model."""
+
     __tablename__ = 'items'
     id = Column(Integer, primary_key=True, index=True)
     body = Column(String)
     date_created = Column(DateTime)
 
     user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship("User", backref='items')
+    user = relationship('User', backref='items')

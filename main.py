@@ -1,18 +1,19 @@
-import config
+"""Module starts the telegram bot."""
 import logging
 import os
-import models
-from models import get_engine, get_db
-from handlers import register_user
 
 from aiogram import Bot, Dispatcher, executor, types
 
+import config
+from handlers import register_user
+from models import Base, get_db, get_engine
+
 try:
     BOT_TOKEN = config.config['BOT_TOKEN']
-except:
+except KeyError:
     BOT_TOKEN = os.environ['BOT_TOKEN']
 
-models.Base.metadata.create_all(get_engine())
+Base.metadata.create_all(get_engine())
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
@@ -21,16 +22,27 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def welcome(message: types.Message):
-    print(message)
-    user = register_user(data={
-        'telegram_id': message['from']['id']
-    }, db=next(get_db()))
-    print(user)
+    """
+    Message handler on start command.
+
+    Parameters:
+        message (types.Message): instance to get text of sent message.
+    """
+    user_data = {
+        'telegram_id': message['from']['id'],
+    }
+    register_user(user_data=user_data, db=next(get_db()))
     await message.reply('Hi!')
+
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def add_idea(message: types.Message):
-    print(message)
+    """
+    Message handler on text.
+
+    Parameters:
+        message (types.Message): instance to get text of sent message.
+    """
     await message.reply('Your idea was added')
 
 if __name__ == '__main__':
