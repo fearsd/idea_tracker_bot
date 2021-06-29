@@ -1,5 +1,6 @@
 """Pytest fixtures."""
 import pytest
+import random
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -23,3 +24,15 @@ def test_db():
     finally:
         models.Base.metadata.drop_all(bind=engine)
         db.close()
+
+
+@pytest.fixture
+def telegram_id():
+    """
+    Fixture that returns random telegram id.
+
+    Returns:
+        telegram_id: User Telegram ID.
+    """
+
+    return random.randint(0, 1000000)
