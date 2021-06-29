@@ -25,7 +25,8 @@ async def welcome(message: types.Message):
     """
     Message handler on start command.
 
-    :param message: aiogram.types.Message instance to get text of sent message.
+    Parameters:
+        message (types.Message): instance to get text of sent message.
     """
     user_data = {
         'telegram_id': message['from']['id'],
@@ -39,7 +40,8 @@ async def add_idea(message: types.Message):
     """
     Message handler on text.
 
-    :param message: aiogram.types.Message instance to get text of sent message.
+    Parameters:
+        message (types.Message): instance to get text of sent message.
     """
     await message.reply('Your idea was added')
 

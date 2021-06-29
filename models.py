@@ -13,7 +13,8 @@ def get_engine():
     """
     Returns db engine.
 
-    :returns: engine of db.
+    Returns:
+        engine: Engine of db.
     """
     try:
         database_uri = \
@@ -32,6 +33,12 @@ Base = declarative_base()
 
 
 def get_db():
+    """
+    Db session.
+
+    Yields:
+        db: Db session
+    """
     engine = get_engine()
     session_local = sessionmaker(bind=engine, autocommit=False, autoflush=False)
     db = session_local()
@@ -51,7 +58,7 @@ class User(Base):
 
 class Item(Base):  # noqa: WPS110
     """Item model."""
-    
+
     __tablename__ = 'items'
     id = Column(Integer, primary_key=True, index=True)
     body = Column(String)

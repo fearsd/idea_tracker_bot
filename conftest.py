@@ -11,7 +11,8 @@ def test_db():
     """
     Fixture that connects to test db.
 
-    :rtype: Iterator[]
+    Yields:
+        db: Db session
     """
     engine = create_engine('sqlite:///:memory:', echo=True)
     session_local = sessionmaker(bind=engine)
