@@ -28,13 +28,13 @@ def test_db():
 
 
 @pytest.fixture
-def telegram_id():
+def user_data():
     """
-    Fixture that returns random telegram id.
+    Fixture that returns random user data.
 
     Returns:
-        telegram_id: User Telegram ID.
+        user_data: User data.
     """
     start = 0
     end = 1000000
-    return random.randint(start, end)  # noqa: S311
+    return {'telegram_id': random.randint(start, end)}  # noqa: S311

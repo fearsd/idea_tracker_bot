@@ -13,20 +13,19 @@ def test_dividing():
     assert 2 / 2 == 1  # noqa: S101
 
 
-def test_register_user(test_db, telegram_id):
+def test_register_user(test_db, user_data):
     """
     Test user registration.
 
     Parameters:
         test_db: Db session.
-        telegram_id: User Telegram ID.
+        user_data: User data.
     """
-    user_data = {'telegram_id': telegram_id}
     user = register_user(user_data=user_data, db=test_db)
     assert user.telegram_id == user_data['telegram_id']  # noqa: S101
 
 
-def test_register_user_if_user_restarted_bot(test_db, telegram_id):
+def test_register_user_if_user_restarted_bot(test_db, user_data):
     """
     Test user registration if user restarted the bot.
 
@@ -34,7 +33,6 @@ def test_register_user_if_user_restarted_bot(test_db, telegram_id):
         test_db: Db session.
         telegram_id: User Telegram ID.
     """
-    user_data = {'telegram_id': telegram_id}
     user_first_start = register_user(user_data=user_data, db=test_db)
 
     user_second_start = register_user(user_data=user_data, db=test_db)
