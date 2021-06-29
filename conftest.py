@@ -1,6 +1,7 @@
 """Pytest fixtures."""
-import pytest
 import random
+
+import pytest
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -34,5 +35,6 @@ def telegram_id():
     Returns:
         telegram_id: User Telegram ID.
     """
-
-    return random.randint(0, 1000000)
+    start = 0
+    end = 1000000
+    return random.randint(start, end)  # noqa: S311 
