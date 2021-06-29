@@ -37,4 +37,4 @@ def telegram_id():
     """
     start = 0
     end = 1000000
-    return random.randint(start, end)  # noqa: S311 
+    return random.randint(start, end)  # noqa: S311

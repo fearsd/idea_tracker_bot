@@ -14,12 +14,13 @@ def register_user(*, user_data, db):
         new_user: The User model instance.
     """
     try:
-        user = db.query(User).filter_by(telegram_id=user_data['telegram_id']).one()
-    except:
+        user = db.query(User).filter_by(
+            telegram_id=user_data['telegram_id'],
+        ).one()
+    except:  # noqa: E722, B001
         new_user = User(**user_data)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
         return new_user
-    else:
-        return user
+    return user
