@@ -17,8 +17,12 @@ def get_engine():
         engine: Engine of db.
     """
     try:
-        database_uri = 'postgresql+psycopg2://{0}:{1}@127.0.0.1:5432/{2}'.format(
-            config['DB_USER'], config['DB_PASSWORD'], config['DB_NAME'],
+        dialect = 'postgresql+psycopg2'
+        database_uri = '{0}://{1}:{2}@127.0.0.1:5432/{3}'.format(
+            dialect,
+            config['DB_USER'],
+            config['DB_PASSWORD'],
+            config['DB_NAME'],
         )
     except KeyError:
         database_uri = os.environ['DATABASE_URL']
@@ -40,7 +44,7 @@ def get_db():
     """
     engine = get_engine()
     session_local = sessionmaker(
-        bind=engine, autocommit=False, autoflush=False
+        bind=engine, autocommit=False, autoflush=False,
     )
     db = session_local()
     try:  # noqa: WPS501
