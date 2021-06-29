@@ -16,8 +16,8 @@ def get_engine():
     Returns:
         engine: Engine of db.
     """
+    dialect = 'postgresql+psycopg2'
     try:
-        dialect = 'postgresql+psycopg2'
         database_uri = '{0}://{1}:{2}@127.0.0.1:5432/{3}'.format(
             dialect,
             config['DB_USER'],
