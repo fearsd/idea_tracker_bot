@@ -13,8 +13,13 @@ def register_user(*, user_data, db):
     Returns:
         new_user: The User model instance.
     """
-    new_user = User(**user_data)
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
+    user = db.query(User).filter_by(telegram_id=user_data['telegram_id']).all()
+
+    if len(user) == 0:
+        new_user = User(**user_data)
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
+    else:
+        return user[0]
