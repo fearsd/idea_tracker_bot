@@ -1,4 +1,4 @@
-"""Module starts the telegram bot"""
+"""Module starts the telegram bot."""
 import logging
 import os
 
@@ -22,7 +22,11 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def welcome(message: types.Message):
-    """Message handler on start command."""
+    """
+    Message handler on start command.
+
+    :param message: aiogram.types.Message instance to get text of sent message.
+    """
     user_data = {
         'telegram_id': message['from']['id'],
     }
@@ -32,7 +36,11 @@ async def welcome(message: types.Message):
 
 @dp.message_handler(content_types=types.ContentType.TEXT)
 async def add_idea(message: types.Message):
-    """Message handler on text."""
+    """
+    Message handler on text.
+
+    :param message: aiogram.types.Message instance to get text of sent message.
+    """
     await message.reply('Your idea was added')
 
 if __name__ == '__main__':

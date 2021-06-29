@@ -8,7 +8,11 @@ import models
 
 @pytest.fixture
 def test_db():
-    """Fixture that connects to test db"""
+    """
+    Fixture that connects to test db.
+
+    :rtype: Iterator[]
+    """
     engine = create_engine('sqlite:///:memory:', echo=True)
     session_local = sessionmaker(bind=engine)
     db = session_local()

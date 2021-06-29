@@ -10,11 +10,15 @@ from config import config
 
 
 def get_engine():
-    """Returns db engine"""
+    """
+    Returns db engine.
+
+    :returns: engine of db.
+    """
     try:
         database_uri = \
-            'postgresql+psycopg2://{}:{}@127.0.0.1:5432/{}'.format(
-                config["DB_USER"], config["DB_PASSWORD"], config["DB_NAME"]
+            'postgresql+psycopg2://{0}:{1}@127.0.0.1:5432/{2}'.format(
+                config['DB_USER'], config['DB_PASSWORD'], config['DB_NAME'],
             )
     except KeyError:
         database_uri = os.environ['DATABASE_URL']
@@ -31,7 +35,7 @@ def get_db():
     engine = get_engine()
     session_local = sessionmaker(bind=engine, autocommit=False, autoflush=False)
     db = session_local()
-    try: # noqa: WPS501
+    try:  # noqa: WPS501
         yield db
     finally:
         db.close()
@@ -39,13 +43,15 @@ def get_db():
 
 class User(Base):
     """User model."""
+
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)
     telegram_id = Column(Integer, unique=True)
 
 
-class Item(Base): # noqa: WPS110
+class Item(Base):  # noqa: WPS110
     """Item model."""
+    
     __tablename__ = 'items'
     id = Column(Integer, primary_key=True, index=True)
     body = Column(String)
