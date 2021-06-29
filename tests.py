@@ -17,8 +17,8 @@ def test_register_user(test_db):
     """
     Test user registration.
 
-    :param test_db: Db session.
-    
+    Parameters:
+        test_db: Db session.
     """
     user_data = {'telegram_id': 1232313}
     user = register_user(user_data=user_data, db=test_db)

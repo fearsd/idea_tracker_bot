@@ -11,16 +11,15 @@ from config import config
 
 def get_engine():
     """
-    Returns db engine.
+    Db engine.
 
     Returns:
         engine: Engine of db.
     """
     try:
-        database_uri = \
-            'postgresql+psycopg2://{0}:{1}@127.0.0.1:5432/{2}'.format(
-                config['DB_USER'], config['DB_PASSWORD'], config['DB_NAME'],
-            )
+        database_uri = 'postgresql+psycopg2://{0}:{1}@127.0.0.1:5432/{2}'.format(
+            config['DB_USER'], config['DB_PASSWORD'], config['DB_NAME'],
+        )
     except KeyError:
         database_uri = os.environ['DATABASE_URL']
 
@@ -40,7 +39,9 @@ def get_db():
         db: Db session
     """
     engine = get_engine()
-    session_local = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+    session_local = sessionmaker(
+        bind=engine, autocommit=False, autoflush=False
+    )
     db = session_local()
     try:  # noqa: WPS501
         yield db

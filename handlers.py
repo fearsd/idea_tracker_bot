@@ -9,7 +9,7 @@ def register_user(*, user_data, db):
     Parameters:
         user_data: Data needed to create user.
         db: Db session.
-    
+
     Returns:
         new_user: The User model instance.
     """
