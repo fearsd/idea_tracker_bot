@@ -1,10 +1,10 @@
 """This module contains business logic for message handlers."""
-from models import User
+from models import Item, User
 
 
-def register_user(*, user_data, db):
+def register_user_or_find_existed(*, user_data, db):
     """
-    Register new user.
+    Register new user or find it by telegram id if he exists.
 
     Parameters:
         user_data: Data needed to create user.
@@ -24,3 +24,21 @@ def register_user(*, user_data, db):
         db.refresh(new_user)
         return new_user
     return user
+
+
+def add_new_idea(*, idea_data, db):
+    """
+    Create new idea.
+
+    Parameters:
+        idea_data: Data needed to create idea.
+        db: Db session.
+
+    Returns:
+        new_idea: The Item model instance.
+    """
+    new_idea = Item(**idea_data)
+    db.add(new_idea)
+    db.commit()
+    db.refresh(new_idea)
+    return new_idea

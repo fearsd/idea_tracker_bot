@@ -5,7 +5,7 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 
 import config
-from handlers import register_user
+from handlers import add_new_idea, register_user_or_find_existed
 from models import Base, get_db, get_engine
 
 try:
@@ -31,7 +31,7 @@ async def welcome(message: types.Message):
     user_data = {
         'telegram_id': message['from']['id'],
     }
-    register_user(user_data=user_data, db=next(get_db()))
+    register_user_or_find_existed(user_data=user_data, db=next(get_db()))
     await message.reply('Hi!')
 
 
@@ -43,6 +43,16 @@ async def add_idea(message: types.Message):
     Parameters:
         message (types.Message): instance to get text of sent message.
     """
+    user_data = {
+        'telegram_id': message['from']['id'],
+    }
+    user = register_user_or_find_existed(user_data=user_data, db=next(get_db))
+    idea_data = {
+        'user_id': user.id,
+        'body': message.text,
+        'date_created': message.date,
+    }
+    add_new_idea(idea_data=idea_data, db=next(get_db()))
     await message.reply('Your idea was added')
 
 if __name__ == '__main__':
