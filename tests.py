@@ -31,7 +31,7 @@ def test_register_user_if_user_restarted_bot(test_db, user_data):
 
     Parameters:
         test_db: Db session.
-        telegram_id: User Telegram ID.
+        user_data: User data.
     """
     user_first_start = register_user(user_data=user_data, db=test_db)
 
