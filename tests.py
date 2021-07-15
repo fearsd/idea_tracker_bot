@@ -35,12 +35,13 @@ def test_register_user_if_user_restarted_bot(test_db, user_data):
         user_data: User data.
     """
     first_user = register_user_or_find_existed(
-        user_data=user_data, 
+        user_data=user_data,
         db=test_db,
     )
 
     second_user = register_user_or_find_existed(
-        user_data=user_data, db=test_db
+        user_data=user_data,
+        db=test_db,
     )
     assert first_user.telegram_id == user_data['telegram_id']  # noqa: S101
     assert first_user.telegram_id == second_user.telegram_id  # noqa: S101
