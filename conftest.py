@@ -1,4 +1,6 @@
 """Pytest fixtures."""
+import random
+
 import pytest
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -23,3 +25,16 @@ def test_db():
     finally:
         models.Base.metadata.drop_all(bind=engine)
         db.close()
+
+
+@pytest.fixture
+def user_data():
+    """
+    Fixture that returns random user data.
+
+    Returns:
+        user_data: User data.
+    """
+    start = 0
+    end = 1000000
+    return {'telegram_id': random.randint(start, end)}  # noqa: S311

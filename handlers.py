@@ -13,8 +13,14 @@ def register_user(*, user_data, db):
     Returns:
         new_user: The User model instance.
     """
-    new_user = User(**user_data)
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
+    try:
+        user = db.query(User).filter_by(
+            telegram_id=user_data['telegram_id'],
+        ).one()
+    except BaseException:  # noqa: E722, B001, WPS424
+        new_user = User(**user_data)
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
+    return user
