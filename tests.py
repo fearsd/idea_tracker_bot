@@ -1,8 +1,10 @@
 """Tests."""
 import datetime
 
-from handlers import (add_new_idea, get_ideas_on_week,
-                      register_user_or_find_existed)
+from handlers import (
+    add_new_idea, get_ideas_on_week,
+    register_user_or_find_existed
+)
 from utils import ideas_to_text
 
 
@@ -84,10 +86,9 @@ def test_get_ideas(test_db, user_data):
         'body': 'text',
         'date_created': datetime.datetime.now(),
     }
-    idea1 = add_new_idea(idea_data=idea_data, db=test_db)
-    idea2 = add_new_idea(idea_data=idea_data, db=test_db)
-    idea3 = add_new_idea(idea_data=idea_data2, db=test_db)
-
+    add_new_idea(idea_data=idea_data, db=test_db)
+    add_new_idea(idea_data=idea_data, db=test_db)
+    add_new_idea(idea_data=idea_data2, db=test_db)
 
     ideas = get_ideas_on_week(user=user, db=test_db)
     assert len(list(ideas)) == 2
@@ -108,11 +109,10 @@ def test_ideas_to_text(test_db, user_data):
         'body': 'text',
         'date_created': datetime.datetime.now(),
     }
-    idea1 = add_new_idea(idea_data=idea_data, db=test_db)
-    idea2 = add_new_idea(idea_data=idea_data, db=test_db)
+    add_new_idea(idea_data=idea_data, db=test_db)
+    add_new_idea(idea_data=idea_data, db=test_db)
     ideas = list(get_ideas_on_week(user=user, db=test_db))
 
     mess = ideas_to_text(ideas)
 
-    print(mess)
     assert type(mess).__name__ == 'str'

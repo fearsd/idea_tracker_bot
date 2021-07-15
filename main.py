@@ -5,8 +5,10 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 
 import config
-from handlers import (add_new_idea, get_ideas_on_week,
-                      register_user_or_find_existed)
+from handlers import (
+    add_new_idea, get_ideas_on_week,
+    register_user_or_find_existed
+)
 from models import Base, get_db, get_engine
 from utils import ideas_to_text
 
@@ -48,7 +50,10 @@ async def add_idea(message: types.Message):
     user_data = {
         'telegram_id': message['from']['id'],
     }
-    user = register_user_or_find_existed(user_data=user_data, db=next(get_db()))
+    user = register_user_or_find_existed(
+        user_data=user_data,
+        db=next(get_db()),
+    )
     idea_data = {
         'user_id': user.id,
         'body': message.text,
@@ -69,8 +74,16 @@ async def get_ideas(message: types.Message):
     user_data = {
         'telegram_id': message['from']['id'],
     }
-    user = register_user_or_find_existed(user_data=user_data, db=next(get_db()))
-    ideas = list(get_ideas_on_week(user=user, db=next(get_db())))
+    user = register_user_or_find_existed(
+        user_data=user_data,
+        db=next(get_db()),
+    )
+    ideas = list(
+        get_ideas_on_week(
+            user=user,
+            db=next(get_db()),
+        ),
+    )
     await message.reply(ideas_to_text(ideas))
 
 if __name__ == '__main__':

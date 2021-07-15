@@ -1,5 +1,6 @@
 """This module contains some extra functions."""
 
+
 def ideas_to_text(ideas):
     """
     Idaeas to text to send.
@@ -13,5 +14,8 @@ def ideas_to_text(ideas):
     message = ''
 
     for idea in ideas:
-        message += '{}\n{}\n\n'.format(idea.date_created.isoformat(), idea.body)
+        message += '{0}\n{1}\n\n'.format(
+            idea.date_created.isoformat(),
+            idea.body,
+        )
     return message
