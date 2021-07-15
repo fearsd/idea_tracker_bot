@@ -1,5 +1,6 @@
 """Tests."""
 import datetime
+
 from handlers import add_new_idea, register_user_or_find_existed
 
 

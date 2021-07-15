@@ -5,7 +5,7 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 
 import config
-from handlers import register_user_or_find_existed, add_new_idea
+from handlers import add_new_idea, register_user_or_find_existed
 from models import Base, get_db, get_engine
 
 try:
