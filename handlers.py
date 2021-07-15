@@ -4,7 +4,7 @@ from models import Item, User
 
 def register_user_or_find_existed(*, user_data, db):
     """
-    Registers new user or find it by telegram id if he exists.
+    Register new user or find it by telegram id if he exists.
 
     Parameters:
         user_data: Data needed to create user.
@@ -28,12 +28,12 @@ def register_user_or_find_existed(*, user_data, db):
 
 def add_new_idea(*, idea_data, db):
     """
-    Creates new idea.
+    Create new idea.
 
     Parameters:
         idea_data: Data needed to create idea.
         db: Db session.
-    
+
     Returns:
         new_idea: The Item model instance.
     """

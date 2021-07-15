@@ -43,12 +43,14 @@ async def add_idea(message: types.Message):
     Parameters:
         message (types.Message): instance to get text of sent message.
     """
+    user_data = {
+        'telegram_id': message['from']['id'],
+    }
+    user = register_user_or_find_existed(user_data=user_data, db=next(get_db))
     idea_data = {
-        'user_id': register_user_or_find_existed(user_data={
-            'telegram_id': message['from']['id'],
-        }, db=next(get_db)).id,
+        'user_id': user.id,
         'body': message.text,
-        'date_created': message.date
+        'date_created': message.date,
     }
     add_new_idea(idea_data=idea_data, db=next(get_db()))
     await message.reply('Your idea was added')
