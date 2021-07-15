@@ -1,6 +1,7 @@
 """This module contains business logic for message handlers."""
-from models import Item, User
 from datetime import datetime, timedelta
+
+from models import Item, User
 
 
 def register_user_or_find_existed(*, user_data, db):

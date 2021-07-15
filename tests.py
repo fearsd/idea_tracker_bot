@@ -1,12 +1,8 @@
 """Tests."""
 import datetime
 
-from handlers import (
-    add_new_idea,
-    register_user_or_find_existed,
-    get_ideas_on_week
-)
-
+from handlers import (add_new_idea, get_ideas_on_week,
+                      register_user_or_find_existed)
 from utils import ideas_to_text
 
 
