@@ -5,8 +5,10 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 
 import config
-from handlers import add_new_idea, register_user_or_find_existed
+from handlers import (add_new_idea, get_ideas_on_week,
+                      register_user_or_find_existed)
 from models import Base, get_db, get_engine
+from utils import ideas_to_text
 
 try:
     BOT_TOKEN = config.config['BOT_TOKEN']
@@ -46,7 +48,10 @@ async def add_idea(message: types.Message):
     user_data = {
         'telegram_id': message['from']['id'],
     }
-    user = register_user_or_find_existed(user_data=user_data, db=next(get_db))
+    user = register_user_or_find_existed(
+        user_data=user_data,
+        db=next(get_db()),
+    )
     idea_data = {
         'user_id': user.id,
         'body': message.text,
@@ -54,6 +59,30 @@ async def add_idea(message: types.Message):
     }
     add_new_idea(idea_data=idea_data, db=next(get_db()))
     await message.reply('Your idea was added')
+
+
+@dp.message_handler(commands=['ideas'])
+async def ideas(message: types.Message):
+    """
+    Message handler on ideas command.
+
+    Parameters:
+        message (types.Message): instance to get text of sent message.
+    """
+    user_data = {
+        'telegram_id': message['from']['id'],
+    }
+    user = register_user_or_find_existed(
+        user_data=user_data,
+        db=next(get_db()),
+    )
+    ideas = list(
+        get_ideas_on_week(
+            user=user,
+            db=next(get_db()),
+        ),
+    )
+    await message.reply(ideas_to_text(ideas))
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=False)

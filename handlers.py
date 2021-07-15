@@ -1,4 +1,6 @@
 """This module contains business logic for message handlers."""
+from datetime import datetime, timedelta
+
 from models import Item, User
 
 
@@ -42,3 +44,32 @@ def add_new_idea(*, idea_data, db):
     db.commit()
     db.refresh(new_idea)
     return new_idea
+
+
+def get_ideas_on_week(*, user, db):  # noqa: WPS210
+    """
+    Get ideas on this week.
+
+    Parameters:
+        user: User model instance.
+        db: Db session.
+
+    Returns:
+        ideas: The list of ideas.
+    """
+    now = datetime.now()
+    monday = now - timedelta(days=now.weekday())
+    days = 7
+    hours = 13
+    minutes = 59
+    seconds = 59
+    sunday = monday + timedelta(days=days,
+        hours=hours,
+        minutes=minutes,
+        seconds=seconds,
+    )
+    return db.query(Item).filter(
+        Item.user == user,
+        Item.date_created <= sunday,
+        Item.date_created >= monday,
+    )
