@@ -1,5 +1,6 @@
 """This module contains business logic for message handlers."""
 from models import Item, User
+from datetime import datetime, timedelta
 
 
 def register_user_or_find_existed(*, user_data, db):
@@ -42,3 +43,23 @@ def add_new_idea(*, idea_data, db):
     db.commit()
     db.refresh(new_idea)
     return new_idea
+
+
+def get_ideas_on_week(*, user, db):
+    """
+    Get ideas on this week.
+
+    Parameters:
+        user: User model instance.
+    
+    Returns:
+        ideas: The list of ideas.
+    """
+    now = datetime.now()
+    monday = now - timedelta(days=now.weekday())
+    sunday = monday + timedelta(days=7, hours=23, minutes=59, seconds=59)
+    return db.query(Item).filter(
+        Item.user==user,
+        Item.date_created <= sunday,
+        Item.date_created >= monday,
+    )

@@ -1,17 +1,13 @@
 """Tests."""
 import datetime
 
-from handlers import add_new_idea, register_user_or_find_existed
+from handlers import (
+    add_new_idea,
+    register_user_or_find_existed,
+    get_ideas_on_week
+)
 
-
-def test_sum():
-    """Example test (sum)."""
-    assert 2 + 2 == 4  # noqa: S101
-
-
-def test_dividing():
-    """Example test (dividing)."""
-    assert 2 / 2 == 1  # noqa: S101
+from utils import ideas_to_text
 
 
 def test_register_user(test_db, user_data):
@@ -50,7 +46,7 @@ def test_register_user_if_user_restarted_bot(test_db, user_data):
 
 def test_add_new_idea(test_db, user_data):
     """
-    Tests adding new idea.
+    Test adding new idea.
 
     Parameters:
         test_db: Db session.
@@ -67,3 +63,60 @@ def test_add_new_idea(test_db, user_data):
     assert idea.user_id == idea_data['user_id']  # noqa: S101
     assert idea.body == idea_data['body']  # noqa: S101
     assert idea.date_created == idea_data['date_created']  # noqa: S101
+
+
+def test_get_ideas(test_db, user_data):
+    """
+    Test getting ideas.
+
+    Parameters:
+        test_db: Db session.
+        user_data: User data.
+    """
+    user = register_user_or_find_existed(user_data=user_data, db=test_db)
+
+    user_data = {'telegram_id': 1234}
+    user2 = register_user_or_find_existed(user_data=user_data, db=test_db)
+
+    idea_data = {
+        'user_id': user.id,
+        'body': 'text',
+        'date_created': datetime.datetime.now(),
+    }
+    idea_data2 = {
+        'user_id': user2.id,
+        'body': 'text',
+        'date_created': datetime.datetime.now(),
+    }
+    idea1 = add_new_idea(idea_data=idea_data, db=test_db)
+    idea2 = add_new_idea(idea_data=idea_data, db=test_db)
+    idea3 = add_new_idea(idea_data=idea_data2, db=test_db)
+
+
+    ideas = get_ideas_on_week(user=user, db=test_db)
+    assert len(list(ideas)) == 2
+
+
+def test_ideas_to_text(test_db, user_data):
+    """
+    Test ideas to text.
+
+    Parameters:
+        test_db: Db session.
+        user_data: User data.
+    """
+    user = register_user_or_find_existed(user_data=user_data, db=test_db)
+
+    idea_data = {
+        'user_id': user.id,
+        'body': 'text',
+        'date_created': datetime.datetime.now(),
+    }
+    idea1 = add_new_idea(idea_data=idea_data, db=test_db)
+    idea2 = add_new_idea(idea_data=idea_data, db=test_db)
+    ideas = list(get_ideas_on_week(user=user, db=test_db))
+
+    mess = ideas_to_text(ideas)
+
+    print(mess)
+    assert type(mess).__name__ == 'str'
