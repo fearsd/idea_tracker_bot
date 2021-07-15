@@ -34,12 +34,17 @@ def test_register_user_if_user_restarted_bot(test_db, user_data):
         test_db: Db session.
         user_data: User data.
     """
-    user_first_start = register_user_or_find_existed(user_data=user_data, db=test_db)  # noqa: E501
+    first_user = register_user_or_find_existed(
+        user_data=user_data, 
+        db=test_db,
+    )
 
-    user_second_start = register_user_or_find_existed(user_data=user_data, db=test_db)  # noqa: E501
-    assert user_first_start.telegram_id == user_data['telegram_id']  # noqa: S101, E501
-    assert user_first_start.telegram_id == user_second_start.telegram_id  # noqa: S101, E501
-    assert user_first_start.id == user_second_start.id  # noqa: S101
+    second_user = register_user_or_find_existed(
+        user_data=user_data, db=test_db
+    )
+    assert first_user.telegram_id == user_data['telegram_id']  # noqa: S101
+    assert first_user.telegram_id == second_user.telegram_id  # noqa: S101
+    assert first_user.id == second_user.id  # noqa: S101
 
 
 def test_add_new_idea(test_db, user_data):
