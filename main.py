@@ -34,7 +34,7 @@ async def welcome(message: types.Message):
         'telegram_id': message['from']['id'],
     }
     register_user_or_find_existed(user_data=user_data, db=next(get_db()))
-    await message.reply('Hi!')
+    await message.reply('Hi! This bot will help ypu to store your ideas and thoughts. Simply send some text to save your idea!')
 
 
 @dp.message_handler(commands=['ideas'])
