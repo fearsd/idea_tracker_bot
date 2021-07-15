@@ -46,7 +46,7 @@ def add_new_idea(*, idea_data, db):
     return new_idea
 
 
-def get_ideas_on_week(*, user, db):
+def get_ideas_on_week(*, user, db):  # noqa: WPS210
     """
     Get ideas on this week.
 
@@ -63,7 +63,11 @@ def get_ideas_on_week(*, user, db):
     hours = 13
     minutes = 59
     seconds = 59
-    sunday = monday + timedelta(days=days, hours=hours, minutes=minutes, seconds=seconds)
+    sunday = monday + timedelta(days=days,
+        hours=hours,
+        minutes=minutes,
+        seconds=seconds,
+    )
     return db.query(Item).filter(
         Item.user == user,
         Item.date_created <= sunday,
