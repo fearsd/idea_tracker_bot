@@ -1,10 +1,7 @@
 """Tests."""
 import datetime
 
-from handlers import (
-    add_new_idea, get_ideas_on_week,
-    register_user_or_find_existed
-)
+from handlers import add_new_idea, get_ideas_on_week, register_user_or_find_existed
 from utils import ideas_to_text
 
 
@@ -63,7 +60,7 @@ def test_add_new_idea(test_db, user_data):
     assert idea.date_created == idea_data['date_created']  # noqa: S101
 
 
-def test_get_ideas(test_db, user_data):
+def test_get_ideas(test_db, user_data):  # noqa: WPS210
     """
     Test getting ideas.
 
@@ -91,7 +88,7 @@ def test_get_ideas(test_db, user_data):
     add_new_idea(idea_data=idea_data2, db=test_db)
 
     ideas = get_ideas_on_week(user=user, db=test_db)
-    assert len(list(ideas)) == 2
+    assert len(list(ideas)) == 2  # noqa: S101
 
 
 def test_ideas_to_text(test_db, user_data):
@@ -115,4 +112,4 @@ def test_ideas_to_text(test_db, user_data):
 
     mess = ideas_to_text(ideas)
 
-    assert type(mess).__name__ == 'str'
+    assert type(mess).__name__ == 'str'  # noqa: S101

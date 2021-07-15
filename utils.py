@@ -13,7 +13,7 @@ def ideas_to_text(ideas):
     """
     message = ''
 
-    for idea in ideas:
+    for idea in ideas:  # noqa: WPS519
         message += '{0}\n{1}\n\n'.format(
             idea.date_created.isoformat(),
             idea.body,

@@ -52,15 +52,20 @@ def get_ideas_on_week(*, user, db):
 
     Parameters:
         user: User model instance.
-    
+        db: Db session.
+
     Returns:
         ideas: The list of ideas.
     """
     now = datetime.now()
     monday = now - timedelta(days=now.weekday())
-    sunday = monday + timedelta(days=7, hours=23, minutes=59, seconds=59)
+    days = 7
+    hours = 13
+    minutes = 59
+    seconds = 59
+    sunday = monday + timedelta(days=days, hours=hours, minutes=minutes, seconds=seconds)
     return db.query(Item).filter(
-        Item.user==user,
+        Item.user == user,
         Item.date_created <= sunday,
         Item.date_created >= monday,
     )
