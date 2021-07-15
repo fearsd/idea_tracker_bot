@@ -5,7 +5,8 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 
 import config
-from handlers import add_new_idea, get_ideas_on_week, register_user_or_find_existed
+from handlers import (add_new_idea, get_ideas_on_week,
+                      register_user_or_find_existed)
 from models import Base, get_db, get_engine
 from utils import ideas_to_text
 
